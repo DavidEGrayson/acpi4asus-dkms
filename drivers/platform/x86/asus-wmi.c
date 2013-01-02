@@ -1282,7 +1282,7 @@ static int asus_wmi_backlight_notify(struct asus_wmi *asus, int code)
 	int old = bd->props.brightness;
 	int new = old;
 
-  pr_info("asus_wmi_backlight_notify(%#x)", code);
+	pr_info("asus_wmi_backlight_notify(%#x)", code);
 
 	if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
 		new = code - NOTIFY_BRNUP_MIN + 1;
@@ -1377,7 +1377,7 @@ static void asus_wmi_notify(u32 value, void *context)
 	code = obj->integer.value;
 	orig_code = code;
 
-  pr_info("Key %#x pressed\n", code);
+	pr_info("Key %#x pressed\n", code);
 
 	if (asus->driver->key_filter) {
 		asus->driver->key_filter(asus->driver, &code, &key_value,
