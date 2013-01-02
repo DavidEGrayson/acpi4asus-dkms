@@ -1282,6 +1282,8 @@ static int asus_wmi_backlight_notify(struct asus_wmi *asus, int code)
 	int old = bd->props.brightness;
 	int new = old;
 
+  pr_info("asus_wmi_backlight_notify(%#x)", code);
+
 	if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
 		new = code - NOTIFY_BRNUP_MIN + 1;
 	else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
@@ -1375,6 +1377,8 @@ static void asus_wmi_notify(u32 value, void *context)
 	code = obj->integer.value;
 	orig_code = code;
 
+  pr_info("Key %#x pressed\n", code);
+
 	if (asus->driver->key_filter) {
 		asus->driver->key_filter(asus->driver, &code, &key_value,
 					 &autorelease);
@@ -1389,7 +1393,7 @@ static void asus_wmi_notify(u32 value, void *context)
 		code = ASUS_WMI_BRN_DOWN;
 
 	if (code == ASUS_WMI_BRN_DOWN || code == ASUS_WMI_BRN_UP) {
-		if (!acpi_video_backlight_support()) {
+		if (!acpi_video_backlight_support() && 0) {
 			asus_wmi_backlight_notify(asus, orig_code);
 			goto exit;
 		}
@@ -1797,9 +1801,12 @@ static int asus_wmi_add(struct platform_device *pdev)
 #endif
 		pr_info("Disabling ACPI video driver\n");
 		acpi_video_unregister();
-		err = asus_wmi_backlight_init(asus);
-		if (err && err != -ENODEV)
-			goto fail_backlight;
+    if (0)
+		{
+		  err = asus_wmi_backlight_init(asus);
+		  if (err && err != -ENODEV)
+			  goto fail_backlight;
+    }
 	} else
 		pr_info("Backlight controlled by ACPI video driver\n");
 
